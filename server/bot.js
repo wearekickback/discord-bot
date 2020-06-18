@@ -82,6 +82,7 @@ function getAction(message) {
 
 function setupBot() {
   const token = process.env.DISCORD_TOKEN
+  console.log({ token })
   client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)
   })
