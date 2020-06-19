@@ -47,12 +47,28 @@ export function handleSubmission(message) {
   })
 }
 
+const datesAreOnSameDay = (firstDate, secondDate) => {
+  const first = new Date(firstDate)
+  const second = new Date(secondDate)
+  return (
+    first.getFullYear() === second.getFullYear() &&
+    first.getMonth() === second.getMonth() &&
+    first.getDate() === second.getDate()
+  )
+}
 export function handleActivity(message) {
   const mentions = message.mentions.users.array()
   const submissions = Submissions.find({
     discordUserId: mentions.length > 0 ? mentions[0].id : message.author.id,
     channelId: message.channel.id,
   }).fetch()
+
+  const daysCompleted = submissions.filter((s, index, array) => {
+    return (
+      index ===
+      array.findIndex((t) => datesAreOnSameDay(t.createdAt, s.createdAt))
+    )
+  }).length
 
   const sender = mentions.length > 0 ? mentions[0] : message.author
 
@@ -71,6 +87,7 @@ export function handleActivity(message) {
 
   const description = `
     Total Submissions: ${totalSubmissions}
+    Days Completed: ${daysCompleted}
     ${submissionsString.join('')}
   `
   console.log({ submissions })
