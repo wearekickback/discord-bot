@@ -17,7 +17,7 @@ $ meteor
 
 - [x] `$submit URL`   /
 - [x] `$submit ATTACHEMENT`
-- [ ] `$activity @name` // shows how many days submitted
+- [x] `$activity @name` // shows how many days submitted
 - [ ] `$leaderboard`// shows daily aggregate of who did how many counts
 
 ### Stretch
