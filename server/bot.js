@@ -2,46 +2,18 @@ const { Client } = require('discord.js')
 const moment = require('moment')
 const client = new Client()
 var _ = require('lodash')
-import { handleSubmission, handleActivity } from './botHandlers'
-
-// const handleMessages = (messages, msg) => {
-//   const mention = msg.mentions.users.first()
-//   let lastMessage
-//   console.log({ mention })
-//   a = messages.first(100).map((m) => {
-//     let embed, embedTitle, embedType, embedUrl, imageUrl
-//     messageId = m.id
-//     if (m.embeds.length) {
-//       embed = m.embeds[0]
-//       embedTitle = embed.title
-//       embedType = embed.type
-//       embedUrl = embed.url
-//     }
-//     const attachement = m.attachments.length ? m.attachments[0] : null
-//     let obj = {
-//       content: m.content,
-//       createdTimestamp: m.createdTimestamp,
-//       createdAt: m.createdAt,
-//       messages: m.message,
-//       authorId: m.author.id,
-//       channelId: m.channel.id,
-//       attachement,
-//       embed,
-//       messageId,
-//     }
-//     lastMessage = obj
-//     if (embedUrl && m.author.id === mention.id) {
-//       msg.channel.send(
-//         `${moment(m.createdAt).fromNow()} ${embedTitle}  <${embedUrl}>`
-//       )
-//     }
-//   })
-//   return lastMessage
-// }
+import {
+  handleSubmission,
+  handleActivity,
+  handleLeaderboard,
+  handleHelp,
+} from './botHandlers'
 
 const actions = {
   activity: 'activity',
   submission: 'submission',
+  leaderboard: 'leaderboard',
+  help: 'help',
 }
 
 function getAction(message) {
@@ -52,37 +24,18 @@ function getAction(message) {
   if (message.startsWith('/submit')) {
     return actions.submission
   }
-}
 
-// function handleActivity() {
-//   function fetchMessage(msg, messageId) {
-//     console.log({ messageId })
-//     msg.channel.messages
-//       .fetch({ limit: 100, before: messageId })
-//       .then((messages) => {
-//         console.log(`${msg.channel.name} Received ${messages.size} messages`)
-//         const lastMessage = handleMessages(messages, msg)
-//         if (lastMessage && lastMessage.messageId != messageId) {
-//           fetchMessage(msg, lastMessage.messageId)
-//         } else {
-//           console.log('no more messages', { lastMessage })
-//         }
-//       })
-//   }
-//   msg.channel.messages
-//     .fetch({ limit: 100 })
-//     .then((messages) => {
-//       console.log(`${msg.channel.name} Received ${messages.size} messages`)
-//       console.log({ messages })
-//       const lastMessage = handleMessages(messages, msg)
-//       fetchMessage(msg, lastMessage.messageId)
-//     })
-//     .catch(console.error)
-// }
+  if (message.startsWith('/leaderboard')) {
+    return actions.leaderboard
+  }
+
+  if (message.startsWith('/help')) {
+    return actions.help
+  }
+}
 
 function setupBot() {
   const token = process.env.DISCORD_TOKEN
-  console.log({ token })
   client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)
   })
@@ -112,6 +65,14 @@ function setupBot() {
         case 'submission':
           console.log('handling submission')
           handleSubmission(msg)
+          break
+        case 'leaderboard':
+          console.log('handling leaderboard')
+          handleLeaderboard(msg)
+          break
+        case 'help':
+          console.log('handling help')
+          handleHelp(msg)
           break
         default:
           console.log('no action provided for this message')
