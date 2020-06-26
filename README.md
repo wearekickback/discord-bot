@@ -22,6 +22,6 @@ $ meteor
 
 ### Stretch
 
-- [ ] `$set @ETHADDRESS` // or \$set nickname
+- [x] `$set @ETHADDRESS` // or \$set nickname
 - [ ] `$submit ATTACHEMENT NUMBER`
 - [ ] [Daily reminder via Webhook](https://discordjs.guide/popular-topics/webhooks.html#what-is-a-webhook)

@@ -1,8 +1,10 @@
 import { MessageEmbed } from 'discord.js'
 import moment from 'moment'
 
+import { addressUtils } from '@0x/utils'
+
 import Submissions from '../imports/api/submissions'
-import ChatUsers from '../imports/api/submissions'
+import ChatUsers from '../imports/api/chatUsers'
 
 function sendBotMessage({ title, description, message }) {
   const embed = new MessageEmbed()
@@ -160,7 +162,9 @@ export function handleHelp(message) {
     /submit [link/video] - records a submission for today
     /activity [username] - Gives activity on a user, defaults to yourself
     /leaderboard - short summary of how everyone is doing!
+    /setEthAddress [ethAddress] - set your username to your kickback account via the ethereum address
   `
+
   sendBotMessage({
     title: 'Help',
     description,
@@ -168,20 +172,34 @@ export function handleHelp(message) {
   })
 }
 
-export function handleSetEthAddress(message) {
-  const description = `
-    /help - shows this tooltip!
-    /submit [link/video] - records a submission for today
-    /activity [username] - Gives activity on a user, defaults to yourself
-    /leaderboard - short summary of how everyone is doing!
-    /setEthAddress [ethAddress] - set your username to your kickback account via the ethereum address
-  `
-  const user = ChatUsers.findOne({ discordUsername: author.username })
+function getSecondPart(str) {
+  return str.split(' ')[1]
+}
 
-  // get eth address from after the first space after /setEthAddress
+export function handleSetEthAddress(message) {
+  const address = getSecondPart(message.content)
+
+  if (!addressUtils.isAddress(address)) {
+    sendBotMessage({
+      title: 'Invalid Ethereum address',
+      description: 'Please check your address and try again',
+      message,
+    })
+  }
+  const user = ChatUsers.findOne({ discordUsername: message.author.username })
+
+  let id
   if (user) {
-    ChatUsers.update(user.id, {})
+    id = ChatUsers.update({ id: user.id }, { address })
+  } else {
+    id = ChatUsers.insert({ discordUsername: message.author.username, address })
   }
 
-  ChatUsers.insert({})
+  if (id) {
+    sendBotMessage({
+      title: `Set Ethereum address successful!`,
+      description: `${message.author.username}'s ethereum address has been set to ${address}`,
+      message,
+    })
+  }
 }
