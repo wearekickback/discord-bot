@@ -7,6 +7,7 @@ import {
   handleActivity,
   handleLeaderboard,
   handleHelp,
+  handleSetEthAddress,
 } from './botHandlers'
 
 const actions = {
@@ -14,6 +15,7 @@ const actions = {
   submission: 'submission',
   leaderboard: 'leaderboard',
   help: 'help',
+  setEthAddress: 'setEthAddress',
 }
 
 function getAction(message) {
@@ -31,6 +33,10 @@ function getAction(message) {
 
   if (message.startsWith('/help')) {
     return actions.help
+  }
+
+  if (message.startsWith('/setEthAddress')) {
+    return actions.setEthAddress
   }
 }
 
@@ -73,6 +79,10 @@ function setupBot() {
         case 'help':
           console.log('handling help')
           handleHelp(msg)
+          break
+        case 'setEthAddress':
+          console.log('handling setEthAddress')
+          handleSetEthAddress(msg)
           break
         default:
           console.log('no action provided for this message')

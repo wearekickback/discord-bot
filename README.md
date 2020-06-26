@@ -15,13 +15,13 @@ $ meteor
 
 ### Minimum
 
-- [x] `$submit URL`   /
+- [x] `$submit URL` /
 - [x] `$submit ATTACHEMENT`
 - [x] `$activity @name` // shows how many days submitted
-- [ ] `$leaderboard`// shows daily aggregate of who did how many counts
+- [x] `$leaderboard`// shows daily aggregate of who did how many counts
 
 ### Stretch
 
-- [ ] `$set @ETHADDRESS` // or $set nickname
+- [ ] `$set @ETHADDRESS` // or \$set nickname
 - [ ] `$submit ATTACHEMENT NUMBER`
 - [ ] [Daily reminder via Webhook](https://discordjs.guide/popular-topics/webhooks.html#what-is-a-webhook)

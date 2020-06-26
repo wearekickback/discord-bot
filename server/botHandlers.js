@@ -2,6 +2,7 @@ import { MessageEmbed } from 'discord.js'
 import moment from 'moment'
 
 import Submissions from '../imports/api/submissions'
+import ChatUsers from '../imports/api/submissions'
 
 function sendBotMessage({ title, description, message }) {
   const embed = new MessageEmbed()
@@ -165,4 +166,22 @@ export function handleHelp(message) {
     description,
     message,
   })
+}
+
+export function handleSetEthAddress(message) {
+  const description = `
+    /help - shows this tooltip!
+    /submit [link/video] - records a submission for today
+    /activity [username] - Gives activity on a user, defaults to yourself
+    /leaderboard - short summary of how everyone is doing!
+    /setEthAddress [ethAddress] - set your username to your kickback account via the ethereum address
+  `
+  const user = ChatUsers.findOne({ discordUsername: author.username })
+
+  // get eth address from after the first space after /setEthAddress
+  if (user) {
+    ChatUsers.update(user.id, {})
+  }
+
+  ChatUsers.insert({})
 }
