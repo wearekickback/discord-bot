@@ -15,6 +15,21 @@ function sendBotMessage({ title, description, message }) {
   message.channel.send(embed)
 }
 
+function getCount(string) {
+  function getLastWord(words) {
+    var n = words.trim().split(' ')
+    return n[n.length - 1]
+  }
+
+  const lastWord = getLastWord(string)
+  const count = parseInt(lastWord)
+  if (isNaN(count)) {
+    return 0
+  }
+
+  return count
+}
+
 export function handleSubmission(message) {
   console.log('adding submission')
   console.log({ message })
@@ -41,6 +56,7 @@ export function handleSubmission(message) {
     createdAt: new Date(),
     channelId: message.channel.id,
     url,
+    count: getCount(message.content),
   })
 
   sendBotMessage({
@@ -48,6 +64,13 @@ export function handleSubmission(message) {
     description: 'Type /activity to see all your submissions',
     message,
   })
+}
+
+function getTotalCount(submissions) {
+  return submissions.reduce((sum, submission) => {
+    if (!submission.count) return sum
+    return sum + submission.count
+  }, 0)
 }
 
 function getDaysCompleted(submissions) {
@@ -68,6 +91,7 @@ const datesAreOnSameDay = (firstDate, secondDate) => {
     first.getDate() === second.getDate()
   )
 }
+
 export function handleActivity(message) {
   const mentions = message.mentions.users.array()
   const submissions = Submissions.find({
@@ -76,6 +100,8 @@ export function handleActivity(message) {
   }).fetch()
 
   const daysCompleted = getDaysCompleted(submissions)
+  const totalCount = getTotalCount(submissions)
+  console.log(totalCount)
 
   const sender = mentions.length > 0 ? mentions[0] : message.author
 
@@ -87,7 +113,9 @@ export function handleActivity(message) {
   }
   const submissionsString = submissions.map(
     (s) => `
-    ${moment(s.createdAt).fromNow()} - ${s.url}
+    ${moment(s.createdAt).fromNow()} - ${s.url} ${
+      s.count && s.count > 0 ? ` - ${s.count} time${s.count > 1 && 's'}` : ''
+    }
   `
   )
   const totalSubmissions = submissions.length
@@ -95,6 +123,7 @@ export function handleActivity(message) {
   const description = `
     Total Submissions: ${totalSubmissions}
     Days Completed: ${daysCompleted}
+    ${totalCount > 0 ? `Total Count: ${totalCount}` : ''}
     ${submissionsString.join('')}
   `
   console.log({ submissions })
@@ -107,9 +136,7 @@ export function handleActivity(message) {
 }
 
 export function handleLeaderboard(message) {
-  // get all the people in the same chatroom
   const channelId = message.channel.id
-  // get all of their activity (just amount of days completed)
   const submissions = Submissions.find({
     channelId: message.channel.id,
   }).fetch()
