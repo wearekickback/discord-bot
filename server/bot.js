@@ -58,7 +58,7 @@ function setupBot() {
       const authorId = msg.author.id
       const authorName = msg.author.username
       const message = msg.content
-      if (channelName !== 'makoto') {
+      if (!channelName.startsWith('stak')) {
         return
       }
       let action = getAction(message)
