@@ -186,7 +186,7 @@ export function handleLeaderboard(message) {
 export function handleHelp(message) {
   const description = `
     /help - shows this tooltip!
-    /submit [link/video] - records a submission for today
+    /submit [link/video] [count] - records a submission for today. Count is optional and must be the last argument.
     /activity [username] - Gives activity on a user, defaults to yourself
     /leaderboard - short summary of how everyone is doing!
     /setEthAddress [ethAddress] - set your username to your kickback account via the ethereum address
