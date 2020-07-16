@@ -114,7 +114,9 @@ export function handleActivity(message) {
   const submissionsString = submissions.map(
     (s) => `
     ${moment(s.createdAt).fromNow()} - ${s.url} ${
-      s.count && s.count > 0 ? ` - ${s.count} time${s.count > 1 && 's'}` : ''
+      s.count && s.count > 0
+        ? ` - ${s.count} time${s.count > 1 ? 's' : ''}`
+        : ''
     }
   `
   )
