@@ -26,3 +26,7 @@ $ meteor
 - [x] `$set @ETHADDRESS` // or \$set nickname
 - [x] `$submit ATTACHEMENT NUMBER`
 - [ ] [Daily reminder via Webhook](https://discordjs.guide/popular-topics/webhooks.html#what-is-a-webhook)
+
+### Deployment
+
+Uses Meteor UP, with a heroku buildpack. More information [here](https://github.com/AdmitHub/meteor-buildpack-horse/blob/master/README.md)
