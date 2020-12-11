@@ -160,8 +160,6 @@ export function handleLeaderboard(message) {
     return acc
   }, {})
 
-  console.log(users)
-
   const userIds = Object.keys(users)
 
   const daysCompletedPerUsers = userIds.map((userId) => {
