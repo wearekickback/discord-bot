@@ -82,6 +82,10 @@ function getDaysCompleted(submissions) {
   }).length
 }
 
+function getUsername(submissions) {
+  return submissions[0].discordUsername
+}
+
 const datesAreOnSameDay = (firstDate, secondDate) => {
   const first = new Date(firstDate)
   const second = new Date(secondDate)
@@ -146,21 +150,25 @@ export function handleLeaderboard(message) {
   }).fetch()
 
   // get all users
+
   const users = submissions.reduce((acc, submission) => {
-    if (acc[submission.discordUsername]) {
-      acc[submission.discordUsername].push(submission)
+    if (acc[submission.discordUserId]) {
+      acc[submission.discordUserId].push(submission)
     } else {
-      acc[submission.discordUsername] = [submission]
+      acc[submission.discordUserId] = [submission]
     }
     return acc
   }, {})
 
-  const usernames = Object.keys(users)
+  console.log(users)
 
-  const daysCompletedPerUsers = usernames.map((username) => {
+  const userIds = Object.keys(users)
+
+  const daysCompletedPerUsers = userIds.map((userId) => {
     return {
-      username,
-      daysCompleted: getDaysCompleted(users[username]),
+      userId,
+      username: getUsername(users[userId]),
+      daysCompleted: getDaysCompleted(users[userId]),
     }
   })
 
