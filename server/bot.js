@@ -90,6 +90,15 @@ function setupBot() {
     })
   )
 
+  client.on(
+    'messageUpdate',
+    Meteor.bindEnvironment((msg) => {
+      console.log('messageUpdate')
+      console.log({ msg })
+      console.log(msg.attachments)
+    })
+  )
+
   client.login(token)
 }
 
