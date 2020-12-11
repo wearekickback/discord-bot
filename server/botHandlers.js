@@ -111,15 +111,17 @@ export function handleActivity(message) {
       message,
     })
   }
-  const submissionsString = submissions.map(
-    (s) => `
+  const submissionsString = submissions
+    .sort((a, b) => b.createdAt - a.createdAt)
+    .map(
+      (s) => `
     ${moment(s.createdAt).fromNow()} - ${s.url} ${
-      s.count && s.count > 0
-        ? ` - ${s.count} time${s.count > 1 ? 's' : ''}`
-        : ''
-    }
+        s.count && s.count > 0
+          ? ` - ${s.count} time${s.count > 1 ? 's' : ''}`
+          : ''
+      }
   `
-  )
+    )
   const totalSubmissions = submissions.length
 
   const description = `

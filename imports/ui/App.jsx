@@ -4,9 +4,7 @@ import Info from './Info.jsx'
 
 const App = () => (
   <div>
-    <h1>Kicbkack bot online</h1>
-    <Hello />
-    <Info />
+    <h1>Kickback bot online</h1>
   </div>
 )
 
