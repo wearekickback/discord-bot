@@ -13,7 +13,7 @@
     "@babel/runtime": "^7.7.6",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "meteor-node-stubs": "^1.0.0",
     "moment": "^2.26.0",
     "react": "^16.9.0",
